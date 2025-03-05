@@ -29,6 +29,7 @@ app.post('/p01',(req,res)=>{
     const params = {
         numero:req.body.numero
     }
+    
     // body : cuando los datos viene en un formulario por el metodo post
     //      : Usa libreria
     res.render('practica01',params);
