@@ -64,6 +64,7 @@
 
                     <table class="table">
                         <thead>
+                            <th>Valor</th>
                             <th>Pago inicial</th>
                             <th>Pago restante</th>
                             <th>Mensualidad</th>
@@ -75,6 +76,7 @@
                                 let mensualidad = totalfin / plazos;
                             %>
                             <tr>
+                                <td><%=valor%></td>
                                 <td><%=pagoInicial%></td>
                                 <td><%=totalfin%></td>
                                 <td><%=mensualidad.toFixed(2)%></td>
