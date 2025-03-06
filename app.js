@@ -29,10 +29,28 @@ app.post('/p01',(req,res)=>{
     const params = {
         numero:req.body.numero
     }
-    
+
     // body : cuando los datos viene en un formulario por el metodo post
     //      : Usa libreria
     res.render('practica01',params);
+})
+
+app.get('/cotizacion',(req,res)=>{
+    const params = {
+        valor : req.query.valor,
+        pinicial : req.query.pinicial,
+        plazos : req.query.plazos
+    }
+    res.render('practica02', params);
+})
+
+app.post('/cotizacion',(req,res)=>{
+    const params = {
+        valor : req.body.valor,
+        pinicial : req.body.pinicial,
+        plazos : req.body.plazos
+    }
+    res.render('practica02',params);
 })
 
 app.get('/practica2',(req,res)=>{

@@ -1,21 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <title>Nodejs</title>
 </head>
+
 <body class="container">
-<%- include('partials/header.ejs') %>
-<%- include('partials/nav.ejs') %>
+    <%- include('partials/header.ejs') %>
+        <%- include('partials/nav.ejs') %>
 
-<div class="container">
-    <center>
-        <h3>Practica 02</h3>
-    </center>
-</div>
+            <div class="container">
+                <center>
+                    <h3>Cotizacion</h3>
+                </center>
+            </div>
 
+            <section class="formulario-container" style="padding: 20px;">
+                <center>
+                    <div id="formulario" class="container">
+                        <form action="/cotizacion" method="post" onsubmit="return validar()">
+                            <div class="form-group">
+                                <label for="valor">Valor del Automovil:</label>
+                                <input type="number" name="valor" id="valor" value="<%=valor%>" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pinicial">Porcentaje Pago Inicial:</label>
+                                <input type="number" name="pinicial" id="pinicial" value="<%=pinicial%>" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="plazos">Plazos</label>
+                                <select name="plazos" id="plazos" >
+                                    <option value="12" <%= plazos === 12 ? 'selected':'' %>>12 meses</option>
+                                    <option value="24" <%= plazos === 24 ? 'selected':'' %>>24 meses</option>
+                                    <option value="36" <%= plazos === 36 ? 'selected':'' %>>36 meses</option>
+                                    <option value="48" <%= plazos === 48 ? 'selected':'' %>>48 meses</option>
+                                    <option value="60" <%= plazos === 60 ? 'selected':'' %>>60 meses</option>
+
+                                </select>
+                            </div>
+
+                            <div class="buttons" style="margin: 20px 0px;">
+                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                <a href="/cotizacion" class="btn btn-secondary">Limpiar</a>
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                </center>
+            </section>
+
+            <section class="container">
+                <center>
+                    <hr>
+                    <h3>Resultados</h3>
+                    <hr>
+
+                    <table class="table">
+                        <thead>
+                            <th>Pago inicial</th>
+                            <th>Pago restante</th>
+                            <th>Mensualidad</th>
+                        </thead>
+                        <tbody>
+                            <% if (valor) {  
+                                let pagoInicial = (valor * pinicial) / 100; 
+                                let totalfin = valor - pagoInicial;
+                                let mensualidad = totalfin / plazos;
+                            %>
+                            <tr>
+                                <td><%=pagoInicial%></td>
+                                <td><%=totalfin%></td>
+                                <td><%=mensualidad.toFixed(2)%></td>
+                            </tr>
+                        <% } %>
+                        </tbody>
+                    </table>
+                </center>
+            </section>
+
+
+            <%- include('partials/footer.ejs') %>
 </body>
-
-<%- include('partials/footer.ejs') %>
+<script>
+    function validar(){
+        var pinicial = document.getElementById('pinicial').value;
+        if(pinicial < 0){
+            alert("El porcentaje debe ser mayor a 0");
+            return false;
+        }
+        if(pinicial>100){
+            alert("El porcentaje debe ser menor o igual a 100");
+            return false;
+        }
+        return true;
+    }
+</script>
+</html>
