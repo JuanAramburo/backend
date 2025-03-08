@@ -1,21 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <title>Nodejs</title>
 </head>
+
 <body class="container">
-<%- include('partials/header.ejs') %>
-<%- include('partials/nav.ejs') %>
+    <%- include('partials/header.ejs') %>
+    <%- include('partials/nav.ejs') %>
 
-<div class="container">
-    <center>
-        <h3>Practica 03</h3>
-    </center>
-</div>
+    <div class="container">
+        <center>
+            <h3>Practica 3</h3>
+        </center>
+    </div>
 
+    <section class="formulario-container" style="padding: 20px;">
+        <center>
+            <div id="formulario" class="container">
+                <form action="/pago" id="formularioPago" action="javascript:void(0);">
+                    <div class="form-group">
+                        <label for="recibo">Numero de Recibo:</label>
+                        <input type="number" name="recibo" id="recibo" value="<%=recibo%>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" name="nombre" id="nombre" value="<%=nombre%>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="puestos">Puesto</label>
+                        <select name="puestos" id="puestos">
+                            <option value="1" <%= puestos == 1 ? 'selected' : '' %>>Auxiliar</option>
+                            <option value="2" <%= puestos == 2 ? 'selected' : '' %>>Albañil</option>
+                            <option value="3" <%= puestos == 3 ? 'selected' : '' %>>Ing. Obra</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="niveles">Nivel</label>
+                        <select name="niveles" id="niveles">
+                            <option value="1" <%= niveles == 1 ? 'selected' : '' %>>Nivel 1</option>
+                            <option value="2" <%= niveles == 2 ? 'selected' : '' %>>Nivel 2</option>
+                        </select>
+                    </div>
+                    
+                    <div class="buttons" style="margin: 20px 0px;">
+                        <button type="submit" class="btn btn-primary">Calcular</button>
+                        <a href="/pago" class="btn btn-secondary">Limpiar</a>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </section>
+    
+    <section class="container">
+        <center>
+            <hr>
+            <h3>Pagos</h3>
+            <hr>
+            <div class="form-group">
+                <label>Numero de Recibo:</label>
+                <input type="number" id="resultadoRecibo" value="<%= typeof recibo !== 'undefined' ? recibo : '' %>" readonly>
+            </div>
+            <div class="form-group">
+                <label>Calculo de Pago:</label>
+                <input type="number" id="resultadoCalculoPago" value="<%= typeof calculoPago !== 'undefined' ? calculoPago : '' %>" readonly>
+            </div>
+            <div class="form-group">
+                <label>Calculo de Impuesto:</label>
+                <input type="number" id="resultadoCalculoImpuesto" value="<%= typeof calculoImpuesto !== 'undefined' ? calculoImpuesto : '' %>" readonly>
+            </div>
+            <div class="form-group">
+                <label>Total a Pagar:</label>
+                <input type="number" id="resultadoTotalPagar" value="<%= typeof totalPagar !== 'undefined' ? totalPagar : '' %>" readonly>
+            </div>
+        </center>
+    </section>
+    
+    <br>
+    <%- include('partials/footer.ejs') %>
+
+    <script>
+        document.getElementById('formularioPago').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const recibo = document.getElementById('recibo').value;
+            const nombre = document.getElementById('nombre').value;
+            const puestos = parseInt(document.getElementById('puestos').value);
+            const niveles = parseInt(document.getElementById('niveles').value);
+
+            const dias = 15;
+
+            let salario = puestos === 1 ? 100 : (puestos === 2 ? 200 : 300);
+            let calculoPago = salario * dias;
+
+            let calculoImpuesto = niveles === 1 ? calculoPago * 0.05 : calculoPago * 0.03;
+            let totalPagar = calculoPago - calculoImpuesto;
+
+            document.getElementById('resultadoRecibo').value = recibo;
+            document.getElementById('resultadoCalculoPago').value = calculoPago;
+            document.getElementById('resultadoCalculoImpuesto').value = calculoImpuesto;
+            document.getElementById('resultadoTotalPagar').value = totalPagar;
+        });
+    </script>
 </body>
-
-<%- include('partials/footer.ejs') %>
+</html>

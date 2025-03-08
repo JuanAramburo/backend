@@ -2,6 +2,7 @@ const http = require('http');
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { param } = require('express/lib/request');
 
 //generar el objeto principal
 const app = express();
@@ -52,6 +53,35 @@ app.post('/cotizacion',(req,res)=>{
     }
     res.render('practica02',params);
 })
+
+app.get('/pago', (req, res) => {
+    const params = {
+        recibo: req.query.recibo || '',
+        nombre: req.query.nombre || '',
+        puestos: req.query.puestos || '1',
+        niveles: req.query.niveles || '1',
+        calculoPago: req.query.calculoPago,
+        calculoImpuesto: req.query.calculoImpuesto,
+        totalPagar: req.query.totalPagar
+    };
+    res.render('practica03', params);
+});
+
+
+app.post('/pago', (req, res) => {
+    const params = {
+        recibo : req.body.recibo,
+        nombre : req.body.nombre,
+        puestos : req.body.puestos,
+        niveles : req.body.niveles,
+        calculoPago : req.body.calculoPago,
+        calculoImpuesto : req.body.calculoImpuesto,
+        totalPagar : req.body.totalPagar
+    };
+
+    res.render('practica03', params);
+});
+
 
 app.get('/practica2',(req,res)=>{
     res.render('practica02');
