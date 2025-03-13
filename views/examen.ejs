@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <title>Nodejs</title>
+</head>
+<body class="container">
+    <%- include('partials/header.ejs') %>
+    <%- include('partials/nav.ejs') %>
+
+    <div class="container">
+        <center>
+            <h3>Filtrar productos por Tipo</h3>
+        </center>
+    </div>
+
+    <section class="container-mt-5">
+        <center>
+            <div class="container-mt-5">
+                <form action="/preexamen" method="post" class="mb-3">
+                    <div class="form-group">
+                        <label for="tipo" class="form-control mb-3">Selecciona el tipo:</label>
+                        <select name="tipo" id="tipo">
+                            <option value="1">Tipo 1</option>
+                            <option value="2">Tipo 2</option>
+                            <option value="3">Tipo 3</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                    <a href="/preexamen" class="btn btn-secondary">Limpiar</a>
+                </form>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Producto</th>
+                            <th>Costo</th>
+                            <th>Costo de venta</th>
+                            <th>Cantidad</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% 
+                        let totalCosto = 0;
+                        let totalVenta = 0;
+                        let totalCantidad = 0;
+                        let totalGanancia = 0;
+                        
+                        lista.forEach(producto => { 
+                            let costoVenta = producto.costo + (producto.costo * 0.15);
+                            let ganancia = (costoVenta - producto.costo) * producto.cantidad;
+                            
+                            totalCosto += producto.costo * producto.cantidad;
+                            totalVenta += costoVenta * producto.cantidad;
+                            totalGanancia += ganancia;
+                            totalCantidad += producto.cantidad;
+                        %>
+                            <tr>
+                                <td><%=producto.id%></td>
+                                <td><%=producto.producto%></td>
+                                <td>$<%=producto.costo%></td>
+                                <td>$<%=costoVenta.toFixed(2)%></td>
+                                <td><%=producto.cantidad%></td>
+                                <td><%=producto.tipo%></td>
+                            </tr>
+                        <% }) %>
+                        
+                        <% if(lista.length > 0) { %>
+                        <tr>
+                            <td colspan="2"><strong>Total</strong></td>
+                            <td>$<%=totalCosto.toFixed(2)%></td>
+                            <td>$<%=totalVenta.toFixed(2)%></td>
+                            <td><%=totalCantidad%></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ganancia Total:</strong></td>
+                            <td><strong>$<%= totalGanancia.toFixed(2) %></strong></td>
+                            <td colspan="4"></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </center>
+    </section>
+
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>
