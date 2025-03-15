@@ -17,6 +17,8 @@ app.use(express.json());
 
 let datos = JSON.parse(fs.readFileSync('datos.json','utf8'));
 let productos = JSON.parse(fs.readFileSync('productos.json','utf8'));
+let alumnos = JSON.parse(fs.readFileSync('alumnos.json','utf8'));
+
 
 // Primer peticion por metodo get
 app.get('/',(req,res)=>{
@@ -84,13 +86,26 @@ app.post('/pago', (req, res) => {
 });
 
 app.get('/preexamen',(req,res) => {
-    res.render('examen', {lista:[]});
+    res.render('preexamen', {lista:[]});
 });
 
 app.post('/preexamen',(req,res) => {
     const tipoSeleccionado = parseInt(req.body.tipo);
     const productosFiltrados = productos.filter(producto => producto.tipo === tipoSeleccionado);
-    res.render('examen', { lista: productosFiltrados });
+    res.render('preexamen', { lista: productosFiltrados });
+});
+
+app.get('/examen', (req, res) => {
+    const nivel = req.query.nivel;
+    const turno = req.query.turno;
+    const tipo = req.query.tipo;   
+
+    res.render('examenU2', { alumnos, nivel, turno, tipo });
+});
+
+app.post('/examen', (req, res) => {
+    const { nivel, turno, tipo } = req.body;
+    res.render('examenU2', { alumnos, nivel, turno, tipo });
 });
 
 
