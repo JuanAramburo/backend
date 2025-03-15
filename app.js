@@ -104,7 +104,10 @@ app.get('/examen', (req, res) => {
 });
 
 app.post('/examen', (req, res) => {
-    const { nivel, turno, tipo } = req.body;
+    const nivel = req.body.nivel;
+    const turno = req.body.turno;
+    const tipo = req.body.tipo; 
+    
     res.render('examenU2', { alumnos, nivel, turno, tipo });
 });
 
